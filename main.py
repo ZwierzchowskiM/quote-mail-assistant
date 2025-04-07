@@ -1,4 +1,4 @@
-from src.email_handler import check_emails
+from src.email_handler import check_emails, read_emails
 
 #def job():
    
@@ -16,7 +16,8 @@ from src.email_handler import check_emails
 def main():
     
     print("App start")
-    check_emails()
+    emails_with_quote = check_emails()
+    read_emails(emails_with_quote)
 
 if __name__ == "__main__":
     main()
