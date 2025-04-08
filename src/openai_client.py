@@ -1,34 +1,61 @@
 from dotenv import load_dotenv
-import openai
+import time
 import os
 from openai import OpenAI
 
 
-def ask_chatGPT():
-    client = OpenAI(
+load_dotenv()
 
-        # This is the default and can be omitted
-        api_key=os.environ.get("OPENAI_API_KEY"),
+def get_openai_client():
+    return OpenAI()
+
+def ask_chatgpt():
+    
+    client = get_openai_client()
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": "Jesteś asystentem handlowym firmy sprzedającej marmury."},
+            {"role": "user", "content": "Opowiedz o twojej firmie"}
+        ]
+    )
+    print (response.choices[0].message.content)
+
+
+def ask_my_assistant(thread_id=None, message="Jakie macie płyty marmurowe?"):
+    client = get_openai_client()
+    assistant_id = os.getenv("OPENAI_ASSISTANT_ID")
+
+    # Tworzymy nowy wątek jeśli nie został podany
+    if not thread_id:
+        thread = client.beta.threads.create()
+        thread_id = thread.id
+
+    # Dodajemy wiadomość użytkownika do wątku
+    client.beta.threads.messages.create(
+        thread_id=thread_id,
+        role="user",
+        content=message
     )
 
-    response = client.responses.create(
-        model="gpt-4o-mini",
-        instructions="You are a coding assistant that talks like a pirate.",
-        input="How do I check if a Python object is an instance of a class?",
+    # Uruchamiamy "run" – czyli zapytanie asystenta
+    run = client.beta.threads.runs.create(
+        thread_id=thread_id,
+        assistant_id=assistant_id,
     )
-    print(response.output_text)
 
-# from openai import OpenAI
-# client = OpenAI()
+    # Czekamy aż run się zakończy (status == "completed")
+    while True:
+        run = client.beta.threads.runs.retrieve(thread_id=thread_id, run_id=run.id)
+        if run.status == "completed":
+            break
+        elif run.status == "failed":
+            raise Exception("Run failed.")
+        time.sleep(1)  # Poczekaj chwilę przed kolejnym sprawdzeniem
 
-# completion = client.chat.completions.create(
-#     model="gpt-4o",
-#     messages=[
-#         {
-#             "role": "user",
-#             "content": "Write a one-sentence bedtime story about a unicorn."
-#         }
-#     ]
-# )
+    # Pobieramy odpowiedź
+    messages = client.beta.threads.messages.list(thread_id=thread_id)
+    response = messages.data[0].content[0].text.value
 
-# print(completion.choices[0].message.content)
+    print("Odpowiedź asystenta:\n", response)
+    return response
