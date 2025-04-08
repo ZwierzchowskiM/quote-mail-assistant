@@ -1,4 +1,5 @@
 from src.email_handler import check_emails, read_emails
+from src.openai_client import ask_chatGPT
 
 #def job():
    
@@ -17,7 +18,10 @@ def main():
     
     print("App start")
     emails_with_quote = check_emails()
-    read_emails(emails_with_quote)
+    # read_emails(emails_with_quote)
+    ask_chatGPT()
+
+
 
 if __name__ == "__main__":
     main()

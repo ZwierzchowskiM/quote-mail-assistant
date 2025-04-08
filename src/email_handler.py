@@ -6,7 +6,7 @@ import os
 import datetime
 import base64
 
-# Zakresy uprawnień do Gmaila
+
 SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
 
 def authenticate_gmail():
