@@ -101,8 +101,6 @@ def read_emails(emails):
         print(f"Treść:\n{email['body']}\n")
 
 
-#---------------------------------------------------------------------
-
 def create_mime_message(to, subject, body_text, attachment_file=None, attachment_name=None):
     
     message = MIMEMultipart()
