@@ -19,7 +19,7 @@ def authenticate_gmail():
 
     try:
         
-        load_dotenv()
+        #load_dotenv()
 
         client_id = os.getenv("GOOGLE_OAUTH2_CLIENT_ID")
         client_secret = os.getenv("GOOGLE_OAUTH2_CLIENT_SECRET")

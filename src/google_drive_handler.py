@@ -15,15 +15,14 @@ def download_file_from_drive(file_id):
 
     try:
         request = drive_service.files().get_media(fileId=file_id)
-        # Najpierw pobieramy nazwę pliku (metadata)
+        
         file_metadata = drive_service.files().get(fileId=file_id, fields='name').execute()
         file_name = file_metadata['name']
 
-        # Potem pobieramy zawartość pliku
+      
         request = drive_service.files().get_media(fileId=file_id)
         file_data = BytesIO(request.execute())
 
-        # Dodajemy atrybut .name do BytesIO
         file_data.name = file_name
 
         print(f"Pobrano plik: {file_name}")
@@ -39,7 +38,7 @@ def authenticate_gmail():
 
     try:
         
-        load_dotenv()
+        #load_dotenv()
 
         client_id = os.getenv("GOOGLE_OAUTH2_CLIENT_ID")
         client_secret = os.getenv("GOOGLE_OAUTH2_CLIENT_SECRET")

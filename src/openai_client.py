@@ -5,7 +5,7 @@ from openai import OpenAI
 import json
 
 
-load_dotenv()
+#load_dotenv()
 
 def get_openai_client():
     return OpenAI()
