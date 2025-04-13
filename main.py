@@ -49,8 +49,9 @@ def main():
     flask_thread.start()
 
 
-    schedule.every().day.at("10:30").do(job)
+    
     schedule.every(2).minutes.do(check_app_status)
+    schedule.every(2).minutes.do(job)
     
     while True:
         schedule.run_pending()
