@@ -35,7 +35,7 @@ def job():
 
 def check_app_status():
 
-    response = requests.get("http://127.0.0.1:8000/ping")
+    response = requests.get("https://quote-mail-assistant.onrender.com/ping")
     if response.status_code == 200:
         print("App status: OK")
     else:
