@@ -23,7 +23,7 @@ def ask_chatgpt():
     print (response.choices[0].message.content)
 
 
-def ask_my_assistant(thread_id=None, message="Szukam marmuru do kuchni. Jakie macie beżowe marmury?"):
+def ask_my_assistant(thread_id=None, message="Szukam marmuru na blaty kuchenne. Jakie macie beżowe marmury?"):
     client = get_openai_client()
     assistant_id = os.getenv("OPENAI_ASSISTANT_ID")
 
